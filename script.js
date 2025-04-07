@@ -235,39 +235,24 @@ updateCurrentTime();
 
 searchInput.addEventListener('input', async () => {
     const query = searchInput.value.trim();
-
-    if (query.length === 0) {
-        suggestionsDiv.style.display = 'none';
+    if (!query) {
         suggestionsDiv.innerHTML = '';
         return;
     }
 
-    const url = `https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`;
+    const res = await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`);
+    const data = await res.json();
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        const suggestions = data[1];
+    suggestionsDiv.innerHTML = ''; // Clear old
 
-        suggestionsDiv.innerHTML = '';
-        suggestions.forEach(suggestion => {
-            const div = document.createElement('div');
-            div.textContent = suggestion;
-            div.style.padding = '5px';
-            div.style.cursor = 'pointer';
-
-            div.addEventListener('click', () => {
-                searchInput.value = suggestion;
-                suggestionsDiv.style.display = 'none';
-            });
-
-            suggestionsDiv.appendChild(div);
+    data[1].forEach(suggestion => {
+        const btn = document.createElement('button');
+        btn.textContent = suggestion;
+        btn.addEventListener('click', () => {
+            window.open(`https://www.google.com/search?q=${encodeURIComponent(suggestion)}`, '_blank');
         });
-
-        suggestionsDiv.style.display = 'block';
-    } catch (error) {
-        console.error('Suggestion Error:', error);
-    }
+        suggestionsDiv.appendChild(btn);
+    });
 });
 
 
