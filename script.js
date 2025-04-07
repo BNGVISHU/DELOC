@@ -226,13 +226,6 @@ updateCurrentTime();
 
 
 
-
-
-
-
-
-
-
 searchInput.addEventListener('input', async () => {
     const query = searchInput.value.trim();
     if (!query) {
