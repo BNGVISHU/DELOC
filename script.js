@@ -5,6 +5,8 @@ const enginemsgshow = document.getElementById("enginemsgshow12039");
 const mainEnginemsg = document.getElementById("enginemainmsg");
 const savebuttonSettings = document.getElementById("saveSettingsButton");
 const mainEngineSelected  = document.getElementById("searchEngine")
+const searchInput = document.getElementById("searchText92030")
+const suggestionsDiv = document.getElementById("suggestionsOfSearch12903921")
 
 //others
 
