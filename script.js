@@ -233,7 +233,7 @@ searchInput.addEventListener('input', async () => {
         return;
     }
 
-    const res = await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`);
+    const res = await fetch(`https://corsproxy.io/?https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`);
     const data = await res.json();
 
     suggestionsDiv.innerHTML = ''; // Clear old
