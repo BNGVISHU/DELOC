@@ -102,17 +102,23 @@ function getMainSettingsValues() {
 function searchbyg(){
     searchText = searchText.replace('/g', '').trim().split(/\s+/).join('+');
     window.location.href = "https://www.google.com/search?q="+searchText;
+    document.getElementById("searchText92030").value = '';
+
 }
 
 function searchbyb(){
     searchText = searchText.replace('/b', '').trim().split(/\s+/).join('+');
     window.location.href = "https://www.bing.com/search?q="+searchText;
+    document.getElementById("searchText92030").value = '';
+
 }
 
 
 function searchbyy(){
     searchText = searchText.replace('/y', '').trim().split(/\s+/).join('+');
     window.location.href = "https://search.yahoo.com/search?p="+searchText;
+    document.getElementById("searchText92030").value = '';
+
 }
 
 function searchByOPT(){
@@ -209,11 +215,78 @@ function updateCurrentTime() {
 }
 
 
-
-
-
-
-
-
 setInterval(updateCurrentTime, 1000);
 updateCurrentTime();
+
+
+//Handling Suggestions
+
+
+
+
+
+
+
+
+
+
+
+searchInput.addEventListener('input', async () => {
+    const query = searchInput.value.trim();
+
+    if (query.length === 0) {
+        suggestionsDiv.style.display = 'none';
+        suggestionsDiv.innerHTML = '';
+        return;
+    }
+
+    const url = `https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const suggestions = data[1];
+
+        suggestionsDiv.innerHTML = '';
+        suggestions.forEach(suggestion => {
+            const div = document.createElement('div');
+            div.textContent = suggestion;
+            div.style.padding = '5px';
+            div.style.cursor = 'pointer';
+
+            div.addEventListener('click', () => {
+                searchInput.value = suggestion;
+                suggestionsDiv.style.display = 'none';
+            });
+
+            suggestionsDiv.appendChild(div);
+        });
+
+        suggestionsDiv.style.display = 'block';
+    } catch (error) {
+        console.error('Suggestion Error:', error);
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
