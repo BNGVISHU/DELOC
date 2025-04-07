@@ -222,27 +222,50 @@ updateCurrentTime();
 
 
 //Handling Suggestions
-searchInput.addEventListener('input', async () => {
-    const query = searchInput.value.trim();
-    if (!query) {
-        suggestionsDiv.innerHTML = '';
-        return;
-    }
-    const res = await fetch(`https://api.allorigins.win/get?url=https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`);
-    const data = await res.json();
 
-    suggestionsDiv.innerHTML = ''; // Clear old
 
+function googleSuggestResponse(data) {
+    suggestionsDiv.style.display = "none";
     data[1].forEach(suggestion => {
+        suggestionsDiv.style.display = "block"
         const btn = document.createElement('button');
         btn.textContent = suggestion;
-        btn.addEventListener('click', () => {
-            window.open(`https://www.google.com/search?q=${encodeURIComponent(suggestion)}`, '_blank');
-        });
-        suggestionsDiv.appendChild(btn);
-    });
-});
+        btn.onclick = () => {
+            if (searchInput.value.includes("/g")){
+                searchInput.value = "/g"+suggestion.replace(/%20/g, ' ');
+            }
+            else if (searchInput.value.includes("/b")){
+                searchInput.value = "/b"+suggestion.replace(/%20/g, ' ');
+            }
+            else if (searchInput.value.includes("/y")){
+                searchInput.value = "/y"+suggestion.replace(/%20/g, ' ');
+            }
 
+            else{
+                searchInput.value = suggestion.replace(/%20/g, ' ');
+            }
+
+
+            searchByOPT();
+        };
+        if (suggestionsDiv.childElementCount < 3) {
+
+            suggestionsDiv.appendChild(btn);
+
+        }
+    });
+}
+
+function getSuggestions(query) {
+    const script = document.createElement('script');
+    script.src = `https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}&callback=googleSuggestResponse`;
+    document.body.appendChild(script);
+}
+
+searchInput.addEventListener('input', () => {
+    suggestionsDiv.innerHTML = "";
+    getSuggestions(searchInput.value.replace('/g', ''));
+});
 
 
 

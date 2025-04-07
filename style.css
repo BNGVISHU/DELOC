@@ -78,7 +78,7 @@
 
 .suggestionsOfSearch{
     position: absolute;
-    display: block;
+    display: none;
     width: 30%;
     left: 50%;
     transform: translateX(-50%);
