@@ -7,6 +7,11 @@ const savebuttonSettings = document.getElementById("saveSettingsButton");
 const mainEngineSelected  = document.getElementById("searchEngine")
 const searchInput = document.getElementById("searchText92030")
 const suggestionsDiv = document.getElementById("suggestionsOfSearch12903921")
+const searchButton = document.getElementById("searchButton02131029380912")
+const mainSettings = document.getElementById("mainSettingsPDP18982")
+const currentTimeDiv = document.querySelector('.CurrentTime');
+const hour = document.getElementById("hourcurrentime")
+const ampm = document.getElementById("apmpmcurrentime")
 
 //others
 
@@ -59,6 +64,9 @@ savebuttonSettings.addEventListener('click', () => {
 
 window.addEventListener('load', loadDefSet);
 
+searchButton.addEventListener("click",()=> {
+    searchByOPT()
+});
 
 
 
@@ -219,7 +227,7 @@ function findicoandsuggestion(){
 }
 
 function updateCurrentTime() {
-    const currentTimeDiv = document.querySelector('.CurrentTime');
+
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes();
