@@ -101,6 +101,13 @@ function getMainSettingsValues() {
     };
 }
 
+function searchbyyt(){
+    searchText = searchText.replace('/yt', '').trim().split(/\s+/).join('+');
+    window.location.href = "https://www.youtube.com/results?search_query="+searchText;
+    document.getElementById("searchText92030").value = '';
+
+}
+
 function searchbyg(){
     searchText = searchText.replace('/g', '').trim().split(/\s+/).join('+');
     window.location.href = "https://www.google.com/search?q="+searchText;
@@ -115,7 +122,6 @@ function searchbyb(){
 
 }
 
-
 function searchbyy(){
     searchText = searchText.replace('/y', '').trim().split(/\s+/).join('+');
     window.location.href = "https://search.yahoo.com/search?p="+searchText;
@@ -123,9 +129,16 @@ function searchbyy(){
 
 }
 
+
+//handle searches by options
 function searchByOPT(){
     searchText = document.getElementById("searchText92030").value;
-    if (searchText.includes('/g')){
+    if (searchText.includes("/yt")){
+        searchbyyt(searchText);
+
+    }
+    
+    else if (searchText.includes('/g')){
         searchbyg()
     }
     else if (searchText.includes('/b')) {
@@ -165,6 +178,11 @@ function findicoandsuggestion(){
         
     }
 
+    if (searchText.includes("/yt")){
+        mainEnginemsg.innerHTML = "Searching On Youtube"
+        engineIcon.src = './res/youtube.png';
+    }
+
     else if (searchText.includes("/b")){
         engineIcon.src = './res/bing.png';
         mainEnginemsg.innerHTML = "Searching Using Bing"
@@ -183,12 +201,12 @@ function findicoandsuggestion(){
         mainEnginemsg.innerHTML = "Searching Using "+mainEngineSelected.value;
     }
 
-    if (enginemsgshow.style.opacity<1){
+    if (enginemsgshow.style.opacity<0.1){
         enginemsgshow.style.opacity = 0;
         enginemsgshow.style.display = 'block';
         let opacity = 0;
         const fadeIn = setInterval(() => {
-            opacity += 0.1;
+            opacity += 0.3;
             enginemsgshow.style.opacity = opacity;
             if (opacity >= 1) {
                 clearInterval(fadeIn);
@@ -241,6 +259,10 @@ function googleSuggestResponse(data) {
                 searchInput.value = "/y"+suggestion.replace(/%20/g, ' ');
             }
 
+            else if (searchInput.value.includes("/yt")){
+                searchInput.value = "/yt"+suggestion.replace(/%20/g, ' ');
+            }
+
             else{
                 searchInput.value = suggestion.replace(/%20/g, ' ');
             }
@@ -262,18 +284,21 @@ function getSuggestions(query) {
     document.body.appendChild(script);
 }
 
+
+function filterSuggestion(){
+    real = searchInput.value;
+    real = real.replace('/g','')
+    real = real.replace('/y','')
+    real = real.replace('/yt','')
+    real = real.replace('/b','')
+    return real
+}
+
 searchInput.addEventListener('input', () => {
     suggestionsDiv.innerHTML = "";
-    getSuggestions(searchInput.value.replace('/g', ''));
+    keywords = filterSuggestion()
+    getSuggestions(keywords);
 });
-
-
-
-
-
-
-
-
 
 
 

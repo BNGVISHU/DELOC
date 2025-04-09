@@ -209,3 +209,8 @@
     text-align: center;
     opacity: 0;
 }
+
+.enginemsgshow {
+    transition: opacity 0.5s ease;
+  }
+  
